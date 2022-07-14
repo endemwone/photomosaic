@@ -1,5 +1,10 @@
 # Photomosaic Creator
 
+Create your own photomosaic using your own pictures.
+
+![Uploading image.png…]()
+
+
 ## To run
 To install the modules:
 
