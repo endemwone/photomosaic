@@ -2,11 +2,12 @@
 
 Create your own photomosaic using your own pictures.
 
-![Uploading image.png…]()
+![mosaic-terminology](https://user-images.githubusercontent.com/81517575/179024622-b2f22190-d53c-4e2b-995a-d238ffbca5d2.png)
 
 
 ## To run
 To install the modules:
+
 
 * Install `virtualenv` and `pip`
 * `virtualenv env`
