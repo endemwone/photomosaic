@@ -1,6 +1,31 @@
 from itertools import product
+import os
 from PIL import Image, ImageDraw
-import sys
+import json
+
+
+class JSONCache:
+    """
+    A small that manages a cache backed
+    by a JSON file on disk.
+    """
+
+    def __init__(self, cache_path):
+        self.cache_path = cache_path
+        if not os.path.isfile(self.cache_path):
+            with open(self.cache_path, 'w') as f:
+                f.write('{}')
+
+    def has_data(self):
+        return os.path.isfile(self.cache_path)
+
+    def write(self, data):
+        with open(self.cache_path, 'w') as f:
+            json.dump(data, f)
+
+    def read(self):
+        with open(self.cache_path) as f:
+            return json.load(f)
 
 
 def get_pixel_matrix(img: Image) -> list:
@@ -37,7 +62,7 @@ def average_rgb(pixels: list) -> tuple:
     return (r_sum / n, g_sum / n, b_sum / n)
 
 
-def get_average_rgbs(img_files: list, dir: str) -> list:
+def get_average_rgbs(source_img_files: list, dir: str, json_cache: str) -> list:
     """
     Calculates average RGB of every image in `img_list`
 
@@ -49,11 +74,14 @@ def get_average_rgbs(img_files: list, dir: str) -> list:
     """
     average_rgb_dict = {}
     progress = 0
-    for file in img_files:
+    for file in source_img_files:
         img = Image.open(dir + "/" + file)
-        average_rgb_dict[file] = average_rgb(get_pixel_matrix(img))
+        if file in json_cache:
+            average_rgb_dict[file] = json_cache[file]
+        else:
+            average_rgb_dict[file] = average_rgb(get_pixel_matrix(img))
         print("\rProgress: {}%".format(
-            round(progress/len(img_files)*100, 2)), end="", flush=True)
+            round(progress/len(source_img_files)*100, 2)), end="", flush=True)
         progress += 1
     print("\rProgress: 100%  ")
     return average_rgb_dict
