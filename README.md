@@ -24,3 +24,13 @@ Place all your source images in a directory, then run
 `python mosaic.py -i <input_image> -o <output_image> -d <source_images_directory>`.
 
 Voila! You got a photomosaic'd version of your input image.
+
+## Caching
+
+The program uses caching to speed up the process of calculating the
+average RGBs of each image. For every new source image added, it appends the RGB
+value into a JSON file.
+
+Currently there is no mechanism to delete the key of an image that is deleted
+from the source images directory. So if you have changed the images in a large amount,
+it is advised to delete the cache JSON file and let the program create it again.
